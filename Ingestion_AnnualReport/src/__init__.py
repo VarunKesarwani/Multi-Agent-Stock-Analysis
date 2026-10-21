@@ -1,0 +1,1 @@
+"""Financial document RAG components."""

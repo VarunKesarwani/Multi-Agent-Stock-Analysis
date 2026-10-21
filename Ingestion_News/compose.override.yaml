@@ -1,0 +1,12 @@
+﻿services:
+  connect:
+    healthcheck:
+      test:
+        - CMD
+        - python3
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:8083/connector-plugins', timeout=4).read()"
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s

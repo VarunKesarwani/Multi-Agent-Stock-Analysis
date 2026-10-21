@@ -1,0 +1,13 @@
+{
+  "profiles": {
+    "DevUI": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "devui",
+      "applicationUrl": "http://127.0.0.1:8081",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

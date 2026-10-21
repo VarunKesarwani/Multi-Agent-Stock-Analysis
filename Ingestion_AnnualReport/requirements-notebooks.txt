@@ -1,0 +1,23 @@
+-r requirements.txt
+# Optional extras used by historical experiments.
+langchain
+langchain-community
+qdrant-client
+pymupdf
+openai
+pydantic
+pillow
+sentence-transformers
+langchain-text-splitters
+chromadb
+pypdf
+pdfplumber
+pymupdf4llm
+python-docx
+markitdown
+pandas
+requests
+numpy
+psycopg2
+pyyaml
+python-dotenv>=1,<2

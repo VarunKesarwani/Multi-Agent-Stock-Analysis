@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <UserSecretsId>StockAnalysis.Agent.Api</UserSecretsId>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <UserSecretsId>dda44d5b-6439-4d26-8029-0665bbe38af3</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ModelContextProtocol" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="tests/**/*.cs" />
+    <Content Remove="tests/**" />
+    <None Remove="tests/**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Instructions/**/*.md" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <Content Update="Instructions/**/*.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>
+

@@ -1,0 +1,8 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Markdown content is inserted dynamically, outside Angular's emulated scope. */
+.message-markdown pre { overflow-x: auto; white-space: pre; background: #172033; color: #f8fafc; padding: 1rem; border-radius: 8px; }
+.message-markdown code { font-family: Consolas, monospace; }
+.message-markdown .copy-code { display: block; margin-top: .8rem; padding: .4rem .7rem; cursor: pointer; }
+.message-markdown table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; }
+.message-markdown td, .message-markdown th { padding: .5rem; border: 1px solid #cbd5e1; white-space: nowrap; }

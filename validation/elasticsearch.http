@@ -1,0 +1,85 @@
+# Read-only requests for Kibana > Dev Tools > Console.
+# Run each request separately. Adjust index pattern and date window if needed.
+
+GET _cat/indices/news-enriched-*?v&h=index,health,docs.count,store.size
+
+GET news-enriched-*/_count
+
+GET news-enriched-*/_field_caps?fields=news_id,published_at,fetched_at,processed_at,enrichment_status.keyword
+
+# Date coverage and enrichment status.
+GET news-enriched-*/_search
+{
+  "size": 0,
+  "aggs": {
+    "earliest_publication": {"min": {"field": "published_at"}},
+    "latest_publication": {"max": {"field": "published_at"}},
+    "latest_fetch": {"max": {"field": "fetched_at"}},
+    "latest_processing": {"max": {"field": "processed_at"}},
+    "status": {"terms": {
+      "field": "enrichment_status.keyword", "size": 10, "missing": "MISSING"
+    }}
+  }
+}
+
+# September 2026 processed counts in Indian time.
+# Zero-count days need review only if daily ingestion was expected.
+GET news-enriched-*/_search
+{
+  "size": 0,
+  "query": {"range": {"processed_at": {
+    "gte": "2026-09-01T00:00:00+05:30",
+    "lt": "2026-10-01T00:00:00+05:30"
+  }}},
+  "aggs": {"daily_processing": {"date_histogram": {
+    "field": "processed_at",
+    "calendar_interval": "day",
+    "time_zone": "Asia/Kolkata",
+    "min_doc_count": 0,
+    "extended_bounds": {
+      "min": "2026-09-01T00:00:00+05:30",
+      "max": "2026-09-30T00:00:00+05:30"
+    }
+  }}}
+}
+
+# Missing/null indexed values, not blank-string validation.
+# Missing publication dates can reflect upstream feed quality.
+GET news-enriched-*/_search
+{
+  "size": 0,
+  "aggs": {"validation": {"filters": {"filters": {
+    "missing_news_id": {"bool": {"must_not": [{"exists": {"field": "news_id"}}]}},
+    "missing_title": {"bool": {"must_not": [{"exists": {"field": "title"}}]}},
+    "missing_published_at": {"bool": {"must_not": [{"exists": {"field": "published_at"}}]}},
+    "missing_processed_at": {"bool": {"must_not": [{"exists": {"field": "processed_at"}}]}},
+    "completed_without_analysis_summary": {"bool": {
+      "filter": [{"term": {"enrichment_status.keyword": "COMPLETED"}}],
+      "must_not": [{"exists": {"field": "analysis.summary"}}]
+    }},
+    "future_publication": {"range": {"published_at": {"gt": "now"}}}
+  }}}}
+}
+
+# Recent failed enrichments.
+GET news-enriched-*/_search
+{
+  "size": 20,
+  "query": {"term": {"enrichment_status.keyword": "FAILED"}},
+  "sort": [{"processed_at": "desc"}],
+  "_source": ["news_id", "title", "source", "enrichment_status",
+              "enrichment_error_type", "processed_at"]
+}
+
+# Bounded sample of duplicate news IDs across indices; NOT exhaustive.
+# A shared ID across category indices can be intentional.
+GET news-enriched-*/_search
+{
+  "size": 0,
+  "aggs": {"repeated_news_ids": {
+    "terms": {
+      "field": "news_id", "min_doc_count": 2, "size": 100, "shard_size": 10000
+    },
+    "aggs": {"locations": {"terms": {"field": "_index", "size": 30}}}
+  }}
+}

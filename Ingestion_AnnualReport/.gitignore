@@ -1,0 +1,10 @@
+.env
+.env.*
+!.env.example
+__pycache__/
+.pytest_cache/
+.venv/
+logs/*
+!logs/.gitkeep
+*.jsonl
+qdrant_storage/

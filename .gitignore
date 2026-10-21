@@ -55,3 +55,12 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# PDF
+*.pdf
+
+data/
+Chatbot/node_modules/
+financial_ingestion/ingestion_screener/archive/*.html
+financial_ingestion/ingestion_screener/archive/*.html
+financial_ingestion/ingestion_xblr/archive/

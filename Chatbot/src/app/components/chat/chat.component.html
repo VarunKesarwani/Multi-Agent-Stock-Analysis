@@ -1,0 +1,54 @@
+<div class="chat-container">
+  <header class="chat-header">
+    <h2>Stock Analysis AI</h2>
+    <button type="button" (click)="clearChat()">Clear chat</button>
+  </header>
+  <div class="mode-picker">
+    <label for="mode">Analysis mode</label>
+    <select id="mode" [(ngModel)]="mode" [disabled]="chatService.busy()">
+      <option value="short_term">Momentum / short term</option>
+      <option value="long_term">Long-term investment</option>
+      <option value="portfolio">Portfolio</option>
+      <option value="tax">Tax scenario</option>
+    </select>
+    <small>History stays in this browser. Each request is independent; include the stock and context in your question.</small>
+  </div>
+  @if (chatService.storageWarning()) {
+    <p role="alert">{{ chatService.storageWarning() }}</p>
+  }
+  <div class="messages-list" #scrollContainer role="log" aria-label="Chat messages" aria-live="polite">
+    @if (!messages().length) {
+      <p>Ask about a stock, financial results, news, or your portfolio.</p>
+    }
+    @for (msg of messages(); track msg.id) {
+      <div class="message-wrapper" [class.user]="msg.sender === 'user'" [class.agent]="msg.sender === 'agent'">
+        <div class="message-bubble" [class.pending]="msg.isPending" [attr.aria-busy]="!!msg.isPending">
+          <strong>{{ msg.sender === 'user' ? 'You' : 'Agent' }}</strong>
+          @if (msg.sender === 'user' || msg.isPending) {
+            <p class="message-text">{{ msg.text }}</p>
+          } @else {
+            <div #answer (click)="copyCode($event)">
+              <markdown class="message-markdown" [data]="msg.text" (ready)="addCopyButtons(answer)"></markdown>
+            </div>
+          }
+          @if (msg.response; as response) {
+            <small>Status: {{ response.status }} · Model: {{ response.model }}</small>
+            @if (response.tools.length) {
+              <details><summary>Tools used</summary>
+                @for (tool of response.tools; track $index) { <div>{{ tool.name }}: {{ tool.status }}</div> }
+              </details>
+            }
+          }
+          <span class="timestamp">{{ msg.timestamp | date:'shortTime' }}</span>
+        </div>
+      </div>
+    }
+  </div>
+  <p class="copy-status" role="status">{{ copyStatus() }}</p>
+  <form class="input-area" (ngSubmit)="onSend()">
+    <textarea name="message" aria-label="Message" [(ngModel)]="draft" placeholder="Ask a question…"
+      (keydown)="onKeydown($event)" rows="2"></textarea>
+    <button type="submit" [disabled]="!draft.trim() || chatService.busy()">{{ chatService.busy() ? 'Analyzing…' : 'Send' }}</button>
+  </form>
+  <small class="input-hint">Enter to send · Shift+Enter for a new line</small>
+</div>

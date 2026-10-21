@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "annualreport-rag-mcp"
+version = "0.1.0"
+description = "Read-only MCP retrieval server for annual-report chunks in Qdrant"
+requires-python = ">=3.11"
+dependencies = [
+  "httpx>=0.27,<1",
+  "mcp>=2.0,<3",
+  "pydantic>=2.10,<3",
+  "qdrant-client>=1.13,<2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3,<9"]
+
+[project.scripts]
+annualreport-rag-mcp = "annualreport_rag_mcp.server:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+

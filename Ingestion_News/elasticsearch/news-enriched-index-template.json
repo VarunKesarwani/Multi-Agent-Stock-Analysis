@@ -1,0 +1,154 @@
+{
+  "index_patterns": [
+    "news-enriched-*"
+  ],
+  "priority": 200,
+  "version": 1,
+  "_meta": {
+    "description": "Mappings for Ollama-enriched financial news events",
+    "event_schema_version": 1,
+    "owner": "Ingestion_News"
+  },
+  "template": {
+    "settings": {
+      "number_of_shards": 1,
+      "number_of_replicas": 0,
+      "refresh_interval": "5s",
+      "mapping.total_fields.limit": 100
+    },
+    "mappings": {
+      "dynamic": "strict",
+      "properties": {
+        "event_type": {
+          "type": "keyword"
+        },
+        "schema_version": {
+          "type": "integer"
+        },
+        "news_id": {
+          "type": "keyword"
+        },
+        "category": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "source": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 512
+            }
+          }
+        },
+        "title": {
+          "type": "text"
+        },
+        "summary": {
+          "type": "text"
+        },
+        "link": {
+          "type": "keyword",
+          "ignore_above": 4096,
+          "index": false
+        },
+        "published_at": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        },
+        "fetched_at": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        },
+        "enrichment_status": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 32
+            }
+          }
+        },
+        "enrichment_error_type": {
+          "type": "keyword",
+          "ignore_above": 256
+        },
+        "processed_at": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        },
+        "analysis": {
+          "type": "object",
+          "dynamic": "strict",
+          "properties": {
+            "summary": {
+              "type": "text"
+            },
+            "overall_tone": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 32
+                }
+              }
+            },
+            "overall_tone_score": {
+              "type": "float"
+            },
+            "company_tones": {
+              "type": "object",
+              "dynamic": "strict",
+              "properties": {
+                "company": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 512
+                    }
+                  }
+                },
+                "symbol": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 64
+                    }
+                  }
+                },
+                "tone": {
+                  "type": "keyword"
+                },
+                "tone_score": {
+                  "type": "float"
+                },
+                "relevance_score": {
+                  "type": "float"
+                }
+              }
+            },
+            "model": {
+              "type": "keyword",
+              "ignore_above": 256
+            },
+            "prompt_version": {
+              "type": "keyword",
+              "ignore_above": 128
+            },
+            "processed_at": {
+              "type": "date",
+              "format": "strict_date_optional_time||epoch_millis"
+            }
+          }
+        }
+      }
+    }
+  }
+}

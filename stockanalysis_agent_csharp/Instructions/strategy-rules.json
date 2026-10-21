@@ -1,0 +1,24 @@
+{
+  "version": "0.1.0",
+  "status": "starter_hypotheses_not_backtested",
+  "shortTerm": {
+    "holdingWeeks": [1, 4],
+    "barInterval": "daily_completed",
+    "macd": { "fast": 12, "slow": 26, "signal": 9, "long": "bullish crossover and increasing histogram", "short": "bearish crossover and decreasing histogram" },
+    "emaPeriods": [5, 13, 21, 55],
+    "longTrend": "close > EMA5 > EMA13 > EMA21 > EMA55; inspect slopes",
+    "shortTrend": "close < EMA5 < EMA13 < EMA21 < EMA55; inspect slopes",
+    "volume": { "baselineBars": 20, "excludeCurrentBar": true, "expansionRatio": 1.5, "direction": "price_confirmed" },
+    "rsi": { "period": 14, "oversold": 30, "overbought": 70, "automaticReversal": false },
+    "news": { "lookbackDays": 7, "longSupport": "positive", "shortSupport": "negative", "neutral": "no_direction", "missing": "unknown" },
+    "weights": null,
+    "positionSizing": "requires risk budget, stop distance and instrument eligibility"
+  },
+  "longTerm": {
+    "ratioWeights": null,
+    "dimensions": ["growth", "profitability", "cash_conversion", "leverage", "valuation", "governance"],
+    "annualReportEvidenceRequired": true
+  },
+  "portfolio": { "rates": "decimal", "riskFreeRate": null, "cashFlowAdjustedReturnsRequired": true },
+  "tax": { "defaultJurisdiction": null, "defaultRates": null, "mode": "supplied_verified_policy_scenario_only" }
+}

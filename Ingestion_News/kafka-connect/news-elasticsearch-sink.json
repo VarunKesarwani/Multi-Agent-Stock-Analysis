@@ -1,0 +1,40 @@
+{
+  "name": "news-elasticsearch-sink",
+  "config": {
+    "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
+    "tasks.max": "1",
+    "topics.regex": "news_enriched_.*",
+    "connection.url": "http://elasticsearch:9200",
+
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+
+    "key.ignore": "false",
+    "schema.ignore": "true",
+    "write.method": "INSERT",
+    "behavior.on.null.values": "IGNORE",
+    "behavior.on.malformed.documents": "warn",
+    "drop.invalid.message": "true",
+
+    "transforms": "routeIndex",
+    "transforms.routeIndex.type": "org.apache.kafka.connect.transforms.RegexRouter",
+    "transforms.routeIndex.regex": "^news_enriched_(.*)$",
+    "transforms.routeIndex.replacement": "news-enriched-$1",
+    "flush.synchronously": "true",
+
+    "batch.size": "200",
+    "max.in.flight.requests": "5",
+    "max.retries": "5",
+    "retry.backoff.ms": "500",
+    "read.timeout.ms": "10000",
+    "connection.timeout.ms": "5000",
+
+    "errors.tolerance": "all",
+    "errors.log.enable": "true",
+    "errors.log.include.messages": "false",
+    "errors.deadletterqueue.topic.name": "news_elasticsearch_sink_dlq",
+    "errors.deadletterqueue.topic.replication.factor": "1",
+    "errors.deadletterqueue.context.headers.enable": "true"
+  }
+}
