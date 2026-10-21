@@ -62,5 +62,4 @@ nunit-*.xml
 data/
 Chatbot/node_modules/
 financial_ingestion/ingestion_screener/archive/*.html
-financial_ingestion/ingestion_screener/archive/*.html
 financial_ingestion/ingestion_xblr/archive/
