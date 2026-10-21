@@ -1,6 +1,0 @@
-confluent_kafka
-feedparser
-ollama
-pydantic>=2,<3
-python-dotenv>=1,<2
-openai>=2,<3

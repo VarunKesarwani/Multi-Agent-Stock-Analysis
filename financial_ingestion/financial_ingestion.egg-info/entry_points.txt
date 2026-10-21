@@ -1,2 +1,0 @@
-[console_scripts]
-financial-ingestion = financial_ingestion.cli:main
